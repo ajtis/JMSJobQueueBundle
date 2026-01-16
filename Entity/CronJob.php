@@ -34,3 +34,5 @@ class CronJob
     public function getLastRunAt()
     {
         return $this->lastRunAt;
+    }
+}
