@@ -2,6 +2,7 @@
 
 namespace JMS\JobQueueBundle\Entity\Listener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostLoadEventArgs;
 use JMS\JobQueueBundle\Entity\Job;
 
 /**
@@ -26,9 +27,9 @@ class ManyToAnyListener
         $this->ref->setAccessible(true);
     }
 
-    public function postLoad(\Doctrine\ORM\Event\LifecycleEventArgs $event)
+    public function postLoad(PostLoadEventArgs $event)
     {
-        $entity = $event->getEntity();
+        $entity = $event->getObject();
         if ( ! $entity instanceof \JMS\JobQueueBundle\Entity\Job) {
             return;
         }
