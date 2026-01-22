@@ -50,7 +50,7 @@ class ManyToAnyListener
         ));
     }
 
-    public function postPersist(\Doctrine\ORM\Event\LifecycleEventArgs $event)
+    public function postPersist(Doctrine\ORM\Event\PostPersistEventArgs $event)
     {
         $entity = $event->getEntity();
         if ( ! $entity instanceof \JMS\JobQueueBundle\Entity\Job) {
