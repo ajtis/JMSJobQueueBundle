@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JMS\JobQueueBundle\Tests\Functional\TestBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -10,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoggingCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('jms-job-queue:logging-cmd')
@@ -25,7 +27,6 @@ class LoggingCommand extends Command
         file_put_contents($input->getArgument('file'), $input->getArgument('name').' started'.PHP_EOL, FILE_APPEND);
         sleep($input->getOption('runtime'));
         file_put_contents($input->getArgument('file'), $input->getArgument('name').' stopped'.PHP_EOL, FILE_APPEND);
-
         return 0;
     }
 }

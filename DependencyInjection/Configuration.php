@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -57,7 +59,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addQueueOptions(ArrayNodeDefinition $def)
+    private function addQueueOptions(ArrayNodeDefinition $def): void
     {
         $def
             ->children()

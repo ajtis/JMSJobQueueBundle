@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -22,14 +24,16 @@ use JMS\JobQueueBundle\Entity\Job;
 
 class InvalidStateTransitionException extends \InvalidArgumentException
 {
-    private $job;
-    private $newState;
-    private $allowedStates;
+    private readonly Job $job;
 
-    public function __construct(Job $job, $newState, array $allowedStates = array())
+    private $newState;
+
+    private readonly array $allowedStates;
+
+    public function __construct(Job $job, $newState, array $allowedStates = [])
     {
         $msg = sprintf('The Job(id = %d) cannot change from "%s" to "%s". Allowed transitions: ', $job->getId(), $job->getState(), $newState);
-        $msg .= count($allowedStates) > 0 ? '"'.implode('", "', $allowedStates).'"' : '#none#';
+        $msg .= $allowedStates !== [] ? '"'.implode('", "', $allowedStates).'"' : '#none#';
         parent::__construct($msg);
 
         $this->job = $job;
@@ -37,7 +41,7 @@ class InvalidStateTransitionException extends \InvalidArgumentException
         $this->allowedStates = $allowedStates;
     }
 
-    public function getJob()
+    public function getJob(): Job
     {
         return $this->job;
     }
@@ -47,7 +51,7 @@ class InvalidStateTransitionException extends \InvalidArgumentException
         return $this->newState;
     }
 
-    public function getAllowedStates()
+    public function getAllowedStates(): array
     {
         return $this->allowedStates;
     }

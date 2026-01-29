@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JMS\JobQueueBundle\Cron;
 
 use JMS\JobQueueBundle\Console\CronCommand;
@@ -7,13 +9,8 @@ use JMS\JobQueueBundle\Entity\Job;
 
 class CommandScheduler implements JobScheduler
 {
-    private $name;
-    private $command;
-
-    public function __construct(string $name, CronCommand $command)
+    public function __construct(private readonly string $name, private readonly CronCommand $command)
     {
-        $this->name = $name;
-        $this->command = $command;
     }
 
     public function getCommands(): array

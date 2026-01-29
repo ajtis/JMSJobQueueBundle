@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -23,17 +25,13 @@ use JMS\JobQueueBundle\Event\JobEvent;
 
 class NewOutputEvent extends JobEvent
 {
-    const TYPE_STDOUT = 1;
-    const TYPE_STDERR = 2;
+    final public const TYPE_STDOUT = 1;
 
-    private $newOutput;
-    private $type;
+    final public const TYPE_STDERR = 2;
 
-    public function __construct(Job $job, $newOutput, $type = self::TYPE_STDOUT)
+    public function __construct(Job $job, private $newOutput, private $type = self::TYPE_STDOUT)
     {
         parent::__construct($job);
-        $this->newOutput = $newOutput;
-        $this->type = $type;
     }
 
     public function getNewOutput()
@@ -41,7 +39,7 @@ class NewOutputEvent extends JobEvent
         return $this->newOutput;
     }
 
-    public function setNewOutput($output)
+    public function setNewOutput($output): void
     {
         $this->newOutput = $output;
     }

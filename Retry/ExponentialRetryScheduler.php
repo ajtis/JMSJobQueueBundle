@@ -1,20 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JMS\JobQueueBundle\Retry;
 
 use JMS\JobQueueBundle\Entity\Job;
 
 class ExponentialRetryScheduler implements RetryScheduler
 {
-    private $base;
-
-    public function __construct($base = 5)
+    public function __construct(private $base = 5)
     {
-        $this->base = $base;
     }
 
-    public function scheduleNextRetry(Job $originalJob)
+    public function scheduleNextRetry(Job $originalJob): \DateTime
     {
-        return new \DateTime('+'.(pow($this->base, count($originalJob->getRetryJobs()))).' seconds');
+        return new \DateTime('+'.($this->base ** count($originalJob->getRetryJobs())).' seconds');
     }
 }

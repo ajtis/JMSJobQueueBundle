@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JMS\JobQueueBundle\Tests\Functional\TestBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -8,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class SuccessfulCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('jms-job-queue:successful-cmd')

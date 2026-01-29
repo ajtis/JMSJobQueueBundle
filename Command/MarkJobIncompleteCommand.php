@@ -1,40 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JMS\JobQueueBundle\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use JMS\JobQueueBundle\Entity\Job;
-use JMS\JobQueueBundle\Entity\Repository\JobManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use JMS\JobQueueBundle\Entity\Repository\JobManager;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
-#[AsCommand(
-    name: 'jms-job-queue:mark-incomplete',
-    description: 'Internal command (do not use). It marks jobs as incomplete..'
-)]
+#[AsCommand('jms-job-queue:mark-incomplete', 'Internal command (do not use). It marks jobs as incomplete.')]
 class MarkJobIncompleteCommand extends Command
 {
-    protected static $defaultName = 'jms-job-queue:mark-incomplete';
-
-    private $registry;
-    private $jobManager;
-
-    public function __construct(Registry $managerRegistry, JobManager $jobManager)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly JobManager $jobManager)
     {
         parent::__construct();
-
-        $this->registry = $managerRegistry;
-        $this->jobManager = $jobManager;
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Internal command (do not use). It marks jobs as incomplete.')
             ->addArgument('job-id', InputArgument::REQUIRED, 'The ID of the Job.')
         ;
     }
@@ -45,11 +35,11 @@ class MarkJobIncompleteCommand extends Command
         $em = $this->registry->getManagerForClass(Job::class);
 
         /** @var Job|null $job */
-        $job = $em->createQuery('SELECT j FROM '.Job::class.' j WHERE j.id = :id')
+        $job = $em->createQuery("SELECT j FROM ".Job::class." j WHERE j.id = :id")
             ->setParameter('id', $input->getArgument('job-id'))
             ->getOneOrNullResult();
 
-        if (null === $job) {
+        if ($job === null) {
             $output->writeln('<error>Job was not found.</error>');
 
             return 1;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -15,7 +17,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace JMS\JobQueueBundle;
 
 use JMS\JobQueueBundle\DependencyInjection\CompilerPass\JobSchedulersPass;
@@ -25,7 +26,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class JMSJobQueueBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new LinkGeneratorsPass());
     }
